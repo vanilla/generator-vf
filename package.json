@@ -1,0 +1,49 @@
+{
+  "name": "generator-vanilla",
+  "version": "0.2.1",
+  "description": "A Yeoman generator for Vanilla that will make your Application, Plugin, and Theme development a breeze.",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "kasperisager/generator-vanilla",
+  "author": {
+    "name": "Kasper Isager",
+    "email": "kasperisager@gmail.com",
+    "url": "https://github.com/kasperisager"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
+  },
+  "files": [
+    "lib",
+    "app",
+    "assets",
+    "controller",
+    "locale",
+    "model",
+    "module"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.17.0",
+    "chalk": "^0.5.0",
+    "lodash": "^2.4.1",
+    "lodash-deep": "^1.1.0",
+    "langmap": "0.0.x"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "underscore": "*",
+    "istanbul": "*",
+    "coveralls": "*",
+    "mocha-lcov-reporter": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
+}
