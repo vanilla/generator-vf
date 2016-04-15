@@ -7,6 +7,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  grunt.file.mkdir('bower_components');
+
   // Load Bower dependencies
   var dependencies = require('wiredep')();
 
@@ -25,15 +27,11 @@ module.exports = function (grunt) {
       }
     , gruntfile: {
         files: ['Gruntfile.js']
-      }<% if (extension === 'less') { %>
-    , less: {
-        files: ['less/**/*.less']
-      , tasks: ['less', 'autoprefixer', 'csslint']
-      }<% } else if (extension === 'scss') { %>
+      }
     , sass: {
         files: ['scss/**/*.scss']
       , tasks: ['scsslint', 'sass', 'autoprefixer', 'csslint']
-      }<% } %>
+      }
     , livereload: {
         options: {
           livereload: true
@@ -45,50 +43,34 @@ module.exports = function (grunt) {
         , 'views/**/*.tpl'
         ]
       }
-    },<% if (extension === 'less') { %>
-
-    less: {
-      dist: {
-        options: {
-          strictMath: true
-        , sourceMap: true
-        , sourceMapURL: 'custom.css.map'
-        , sourceMapFilename: 'design/custom.css.map'
-        }
-      , files: [{
-          expand: true
-        , cwd: '<%= extension %>/'
-        , src: ['*.<%= extension %>']
-        , dest: 'design/'
-        , ext: '.css'
-       }]
-      }
-    },<% } else if (extension === 'scss') { %>
+    },
 
     sass: {
+      options: {
+        sourceMap: true,
+        outputStyle: "expanded"
+      },
       dist: {
-        options: {
-          sourceComments: 'map'
-        }
-      , files: [{
+        files: [{
           expand: true
-        , cwd: '<%= extension %>/'
+        , cwd: 'scss/'
         , src: [
-            '*.<%= extension %>'
-          , '!_*.<%= extension %>'
+            '*.scss'
+          , '!_*.scss'
           ]
         , dest: 'design/'
         , ext: '.css'
-       }]
+        }]
       }
     },
 
     scsslint: {
       options: {
-        config: '<%= extension %>/.scss-lint.yml'
+        force: true
+      , config: 'scss/.scss-lint.yml'
       }
-    , all: ['<%= extension %>/**/*.<%= extension %>']
-    },<% } %>
+    , all: ['scss/**/*.scss']
+    },
 
     autoprefixer: {
       dist: {
@@ -98,14 +80,16 @@ module.exports = function (grunt) {
 
     jshint: {
       options: {
-        jshintrc: 'js/.jshintrc'
+        force: true
+      , jshintrc: 'js/.jshintrc'
       }
     , all: ['js/src/**/*.js']
     },
 
     csslint: {
       options: {
-        csslintrc: 'design/.csslintrc'
+        quiet: true
+      , csslintrc: 'design/.csslintrc'
       }
     , all: ['design/custom.css']
     },
@@ -132,17 +116,16 @@ module.exports = function (grunt) {
 
     wiredep: {
       dist: {
-        src: ['<%= extension %>/**/*.<%= extension %>']
+        src: ['scss/**/*.scss']
       }
     }
 
   });
 
   grunt.registerTask('default', [
-    'wiredep'<% if (extension === 'less') { %>
-  , 'less'<% } else if (extension === 'scss') { %>
+    'wiredep'
   , 'scsslint'
-  , 'sass'<% } %>
+  , 'sass'
   , 'autoprefixer'
   , 'concat'
   , 'jshint'

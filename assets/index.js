@@ -1,11 +1,14 @@
 'use strict';
 
-var fs    = require('fs')
-  , path  = require('path')
-  , yo    = require('yeoman-generator')
-  , _     = require('lodash')
-  , utils = require('../lib/utils')
-  , Base  = yo.generators.Base;
+var fs     = require('fs')
+  , path   = require('path')
+  , yo     = require('yeoman-generator')
+  , _      = require('lodash')
+  , utils  = require('../lib/utils')
+  , reader = require('html-wiring')
+  , Base   = yo.Base;
+
+_.mixin(require('underscore.string'));
 
 var AssetsGenerator = Base.extend({
   constructor: function () {
@@ -26,7 +29,7 @@ var AssetsGenerator = Base.extend({
   init: function () {
     var self = this
       , cb   = this.async()
-      , base = this.dest._base()
+      , base = this.destinationRoot()
       , type = this.config.get('type');
 
     var today = new Date();
@@ -34,48 +37,11 @@ var AssetsGenerator = Base.extend({
 
     utils.getAddon(base, type, function (err, addon) {
       self.addon = addon;
+      if (addon) {
+        self.addon.slug = addon.name ? _.slugify(addon.name) : 'assets';
+      }
       cb();
     });
-  },
-
-  askForPreprocessor: function () {
-    var next = this.async()
-      , prompts = [{
-        type: 'list'
-      , name: 'preprocessor'
-      , message: 'Which CSS preprocessor would you like to use?'
-      , default: this.config.get('preprocessor') || 'LESS'
-      , choices: ['LESS', 'SCSS']
-      }];
-
-    this.prompt(prompts, function (props) {
-      this.preprocessor = props.preprocessor;
-
-      // Save preprocessor choice to config
-      this.config.set('preprocessor', props.preprocessor);
-
-      next();
-    }.bind(this));
-  },
-
-  askForBuildTool: function () {
-    var next = this.async()
-      , prompts = [{
-        type: 'list'
-      , name: 'buildtool'
-      , message: 'Which build tool would you like to use?'
-      , default: this.config.get('buildtool') || 'Gulp'
-      , choices: ['Gulp', 'Grunt']
-      }];
-
-    this.prompt(prompts, function (props) {
-      this.buildtool = props.buildtool;
-
-      // Save build tool choice to config
-      this.config.set('buildtool', props.buildtool);
-
-      next();
-    }.bind(this));
   },
 
   files: function () {
@@ -86,36 +52,20 @@ var AssetsGenerator = Base.extend({
     this.template('csslintrc', 'design/.csslintrc');
     this.template('jshintrc', 'js/.jshintrc');
     this.template('main.js', 'js/src/main.js');
+    this.template('custom.scss', 'scss/custom.scss');
+    this.template('scss-lint.yml', 'scss/.scss-lint.yml');
+    this.template('Gruntfile.js');
 
-    this.extension  = this.preprocessor.toLowerCase();
-    this.stylesheet = this.extension + '/custom.' + this.extension;
-
-    this.template('custom.' + this.extension, this.stylesheet);
-
-    switch (this.preprocessor) {
-    case 'SCSS':
-      this.template('scss-lint.yml', 'scss/.scss-lint.yml');
-      break;
-    }
-
-    switch (this.buildtool) {
-    case 'Gulp':
-      this.template('gulpfile.js');
-      break;
-    case 'Grunt':
-      this.template('Gruntfile.js');
-      break;
-    }
-
-    fs.exists(path.resolve(this.dest._base(), 'README.md'), function (exists) {
+    fs.exists(path.resolve(this.destinationRoot(), 'README.md'), function (exists) {
       if (exists) {
-        var instructions = _.template(this.read('README.md'), this);
-
+        var instructions = _.template(this.read('README.md'));
         // Append the pipeline instructions to the project README
-        this.write('README.md', this.readFileAsString('README.md').replace(
+        this.write('README.md', reader.readFileAsString('README.md').replace(
           '---\nCopyright'
         , instructions + '\n---\nCopyright'
         ));
+      } else {
+        this.template('README.md');
       }
 
       next();

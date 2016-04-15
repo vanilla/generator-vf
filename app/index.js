@@ -5,9 +5,10 @@ var path  = require('path')
   , chalk = require('chalk')
   , yo    = require('yeoman-generator')
   , utils = require('../lib/utils')
-  , Base  = yo.generators.Base;
+  , Base  = yo.Base;
 
 _.mixin(require('lodash-deep'));
+_.mixin(require('underscore.string'));
 
 var AppGenerator = Base.extend({
   constructor: function () {
@@ -31,7 +32,7 @@ var AppGenerator = Base.extend({
   init: function () {
     var self = this
       , cb   = this.async()
-      , base = this.dest._base()
+      , base = this.destinationRoot()
       , type = this.config.get('type');
 
     utils.getAddon(base, type, function (err, addon) {
@@ -40,36 +41,25 @@ var AppGenerator = Base.extend({
     });
   },
 
-  welcome: function () {
-    // Have Yeoman greet the user
-    /* istanbul ignore if */
-    if (!this.options['skip-welcome-message']) {
-      console.log(this.yeoman);
-      console.log(chalk.yellow(
-        'I\'m here to guide you through the process of setting up\n' +
-        'a basic Addon for Vanilla. You can start by telling me a\n' +
-        'little bit about yourself. I will store this information\n' +
-        'in your addon so you only have to enter it once...\n'
-      ));
-    }
-  },
-
   askForAuthor: function () {
     var next = this.async()
       , prompts = [{
         type: 'input'
       , name: 'author'
       , message: 'What is your full name?'
+      , store: true
       , default: _.deepGetValue(this, 'addon.author.name')
       }, {
         type: 'input'
       , name: 'email'
       , message: 'I would also like your email'
+      , store: true
       , default: _.deepGetValue(this, 'addon.author.email')
       }, {
         type: 'input'
       , name: 'url'
       , message: 'Optionally, enter your website'
+      , store: true
       , default: _.deepGetValue(this, 'addon.author.url')
       }];
 
@@ -118,7 +108,7 @@ var AppGenerator = Base.extend({
       , name: 'type'
       , message: 'What kind of addon is this?'
       , default: this.config.get('type')
-      , choices: ['Application', 'Plugin', 'Theme']
+      , choices: ['Plugin', 'Theme']
       }, {
         type: 'input'
       , name: 'name'
@@ -137,19 +127,6 @@ var AppGenerator = Base.extend({
       }, {
         type: 'checkbox'
       , name: 'extras'
-      , message: 'Optional files to include in your application'
-      , choices: [
-          'class.hooks.php'
-        , 'configuration.php'
-        , 'bootstrap.php'
-        , 'structure.php'
-        ]
-      , when: /* istanbul ignore next */ function (props) {
-          return props.type === 'Application';
-        }
-      }, {
-        type: 'checkbox'
-      , name: 'extras'
       , message: 'Optional files to include in your theme'
       , choices: [
           'class.themehooks.php'
@@ -162,6 +139,7 @@ var AppGenerator = Base.extend({
     this.prompt(prompts, function (props) {
       this.type = props.type;
       this.name = props.name;
+      this.classname = _.classify(props.name);
       this.desc = props.desc;
       this.url = props.url;
       this.extras = props.extras || [];
@@ -177,7 +155,7 @@ var AppGenerator = Base.extend({
       , today = new Date();
 
     this.year      = today.getFullYear();
-    this.directory = path.basename(this.dest._base());
+    this.directory = path.basename(this.destinationRoot());
 
     this.copy('editorconfig', '.editorconfig');
 
@@ -197,16 +175,6 @@ var AppGenerator = Base.extend({
     };
 
     switch (this.type) {
-    case 'Application':
-      this.template('about.php', 'settings/about.php');
-
-      // Optional application files
-      extra('class.hooks.php', 'settings/class.hooks.php');
-      extra('configuration.php', 'settings/configuration.php');
-      extra('bootstrap.php', 'settings/bootstrap.php');
-      extra('structure.php', 'settings/structure.php');
-      break;
-
     case 'Plugin':
       this.template(
         'class.plugin.php',

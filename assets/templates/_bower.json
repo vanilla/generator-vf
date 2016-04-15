@@ -1,5 +1,5 @@
 {
-  "name": "<%= addon ? _.slugify(addon.name) : 'assets' %>",
+  "name": "<%= addon ? addon.slug : 'assets' %>",
   "private": true,
   "dependencies": {}
 }

@@ -23,12 +23,11 @@ var generateAddon = function (type, done) {
       return done(err);
     }
 
-    var addon = helpers.createGenerator('vanilla:app', [
+    var addon = helpers.createGenerator('vf:app', [
       '../../../app'
     ]);
 
     addon.options['skip-welcome-message'] = true;
-
     done(false, addon);
   });
 }
@@ -58,43 +57,6 @@ describe('addon generator', function () {
       addon.run({}, function () {
         helpers.assertNoFile(notExpected);
         done();
-      });
-    });
-  });
-
-  describe('application generation', function () {
-    it('creates expected files', function (done) {
-      var prompt = _.extend({}, promptFixture, {
-        type: 'Application'
-      , name: 'Awesome App'
-      , description: 'This is an awesome app!'
-      , url: 'https://github.com/johndoe/awesome-app'
-      , extras: [
-          'class.hooks.php'
-        , 'configuration.php'
-        , 'bootstrap.php'
-        , 'structure.php'
-        ]
-      })
-      , expected = _.extend([], expectedFixture, [
-        'settings/about.php'
-      , 'settings/class.hooks.php'
-      , 'settings/configuration.php'
-      , 'settings/bootstrap.php'
-      , 'settings/structure.php'
-      ]);
-
-      generateAddon('application', function (err, application) {
-        if (err) {
-          return done(err);
-        }
-
-        helpers.mockPrompt(application, prompt);
-
-        application.run({}, function () {
-          helpers.assertFile(expected);
-          done();
-        });
       });
     });
   });

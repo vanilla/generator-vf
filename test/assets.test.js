@@ -1,124 +1,53 @@
 'use strict';
 
-var path    = require('path')
-  , _       = require('lodash')
-  , helpers = require('yeoman-generator').test
-  , expectedFixture = [
-    'package.json'
-  , 'bower.json'
-  , 'design/.csslintrc'
-  , 'js/.jshintrc'
-  , 'js/src/main.js'
-  ];
+var path   = require('path')
+  , should = require('chai').should()
+  , expect = require('chai').expect
+  , utils  = require('../lib/utils');
 
-var generateAssets = function (type, done) {
-  helpers.testDirectory(path.join(__dirname, 'temp', 'assets', type), function (err) {
-    if (err) {
-      return done(err);
-    }
+describe('generator utitilies', function () {
+  describe('#getAddon()', function () {
+    it('parses theme meta into JSON', function (done) {
+      var fixture = require('./fixtures/theme/about.json')
+        , base    = path.resolve(__dirname, 'fixtures/theme');
 
-    var assets = helpers.createGenerator('vanilla:assets', [
-      '../../../../assets'
-    ]);
+      utils.getAddon(base, 'Theme', function (err, addon) {
+        if (err) {
+          return done(err);
+        }
 
-    assets.options['skip-install'] = true;
-
-    done(false, assets);
-  });
-};
-
-describe('assets sub-generator', function () {
-  it('creates base files and Gulp workflow with LESS', function (done) {
-    var expected = _.extend([], expectedFixture, [
-      'gulpfile.js'
-    , 'less/custom.less'
-    ]);
-
-    generateAssets('gulp-less', function (err, assets) {
-      if (err) {
-        return done(err);
-      }
-
-      helpers.mockPrompt(assets, {
-        preprocessor: 'LESS'
-      , buildtool: 'Gulp'
-      });
-
-      assets.run({}, function () {
-        helpers.assertFile(expected);
+        addon.should.deep.equal(fixture);
         done();
       });
     });
-  });
 
-  it('creates base files and Gulp workflow with SCSS', function (done) {
-    var expected = _.extend([], expectedFixture, [
-      'gulpfile.js'
-    , 'scss/custom.scss'
-    , 'scss/.scss-lint.yml'
-    ]);
+    it('fails when passed invalid or unsupported addon type', function (done) {
+      var fixture = require('./fixtures/theme/about.json')
+        , base    = path.resolve(__dirname, 'fixtures/theme');
 
-    generateAssets('gulp-sass', function (err, assets) {
-      if (err) {
-        return done(err);
-      }
-
-      helpers.mockPrompt(assets, {
-        preprocessor: 'SCSS'
-      , buildtool: 'Gulp'
-      });
-
-      assets.run({}, function () {
-        helpers.assertFile(expected);
+      utils.getAddon(base, 'Invalid', function (err, addon) {
+        expect(err).to.be.defined;
+        expect(addon).to.be.undefined;
         done();
       });
     });
-  });
 
-  it('creates base files and Grunt workflow with LESS', function (done) {
-    var expected = _.extend([], expectedFixture, [
-      'Gruntfile.js'
-    , 'less/custom.less'
-    ]);
-
-    generateAssets('grunt-less', function (err, assets) {
-      if (err) {
-        return done(err);
-      }
-
-      helpers.mockPrompt(assets, {
-        preprocessor: 'LESS'
-      , buildtool: 'Grunt'
-      });
-
-      assets.run({}, function () {
-        helpers.assertFile(expected);
+    it('fails when passed non-existing files', function (done) {
+      utils.getAddon('i/do/not/exist', 'Theme', function (err, addon) {
+        expect(err).to.be.defined;
+        expect(addon).to.be.undefined;
         done();
       });
     });
-  });
 
-  it('creates base files and Grunt workflow with SCSS', function (done) {
-    var expected = _.extend([], expectedFixture, [
-      'Gruntfile.js'
-    , 'scss/custom.scss'
-    , 'scss/.scss-lint.yml'
-    ]);
+    it('fails when addon meta is not valid PHP', function (done) {
+      var base = path.resolve(__dirname, 'fixtures/malformed');
 
-    generateAssets('grunt-sass', function (err, assets) {
-      if (err) {
-        return done(err);
-      }
-
-      helpers.mockPrompt(assets, {
-        preprocessor: 'SCSS'
-      , buildtool: 'Grunt'
-      });
-
-      assets.run({}, function () {
-        helpers.assertFile(expected);
+      utils.getAddon(base, 'Theme', function (err, addon) {
+        expect(err).to.be.defined;
+        expect(addon).to.be.undefined;
         done();
       });
-    });
+    })
   });
 });

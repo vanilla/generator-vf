@@ -19,15 +19,6 @@ $<%= type %>Info['<%= directory %>'] = array(
  * @license   <%= license %>
  * @since     1.0.0
  */
-class <%= _(name).classify() %>Plugin extends Gdn_Plugin {
-    /**
-     * This will run when you "Enable" the plugin
-     *
-     * @since  1.0.0
-     * @access public
-     * @return bool
-     */
-    public function setup() {
-        return true;
-    }
+class <%= classname %>Plugin extends Gdn_Plugin {
+
 }
