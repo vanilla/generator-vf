@@ -1,10 +1,10 @@
 {
   "name": "generator-vf",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Yeoman generator for Vanilla that will make your Plugin and Theme development a breeze.",
   "license": "MIT",
   "main": "app/index.js",
-  "private": false,
+  "repository": "vanilla/generator-vf",
   "contributors": [
     {
       "name": "Kasper Isager",

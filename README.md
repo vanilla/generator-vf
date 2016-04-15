@@ -1,7 +1,8 @@
 # generator-vf
 
-A [Yeoman](http://yeoman.io) generator for Vanilla that will make your Plugin and Theme development a breeze
+[![Release](http://img.shields.io/npm/v/generator-vanilla.svg?style=flat)](https://www.npmjs.org/package/generator-vanilla) [![Build Status](http://img.shields.io/travis/kasperisager/generator-vanilla.svg?style=flat)](https://travis-ci.org/kasperisager/generator-vanilla) [![Coverage Status](http://img.shields.io/coveralls/kasperisager/generator-vanilla.svg?style=flat)](https://coveralls.io/r/kasperisager/generator-vanilla) [![Code Climate](http://img.shields.io/codeclimate/github/kasperisager/generator-vanilla.svg?style=flat)](https://codeclimate.com/github/kasperisager/generator-vanilla) [![Dependency Status](http://img.shields.io/gemnasium/kasperisager/generator-vanilla.svg?style=flat)](https://gemnasium.com/kasperisager/generator-vanilla) [![Downloads](http://img.shields.io/npm/dm/generator-vanilla.svg?style=flat)](https://www.npmjs.org/package/generator-vanilla)
 
+A [Yeoman](http://yeoman.io) generator for Vanilla that will make your Plugin and Theme development a breeze
 
 ## Getting Started
 
@@ -32,7 +33,13 @@ $ npm install -g generator-vf
 Finally, initiate the generator:
 
 ```sh
-$ yo vanilla
+$ yo vf
+```
+
+Install just the grunt and sass assets in a project using:
+
+```sh
+$ yo vf:assets
 ```
 
 ### Getting To Know Yeoman
@@ -44,4 +51,7 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 ---
 
-Copyright &copy; 2014 [Kasper Kronborg Isager](http://kasperisager.github.io). Licensed under the terms of the [MIT License](LICENSE.md)
+This is based on [generator-vanilla](https://github.com/kasperisager/generator-vanilla) by Kasper Kronborg Isager](http://kasperisager.github.io).
+All code from the original package is copyright &copy; 2014 [Kasper Kronborg Isager](http://kasperisager.github.io).
+Modifications are copyright &copy; 2016 [Vanilla Forums Inc.](https://vanillaforums.com).
+All code is licensed under the terms of the [MIT License](LICENSE.md)
