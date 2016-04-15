@@ -1,7 +1,5 @@
 # generator-vf
 
-[![Release](http://img.shields.io/npm/v/generator-vanilla.svg?style=flat)](https://www.npmjs.org/package/generator-vf) [![Build Status](http://img.shields.io/travis/vanilla/generator-vf.svg?style=flat)](https://travis-ci.org/vanilla/generator-vf) [![Coverage Status](http://img.shields.io/coveralls/vanilla/generator-vf.svg?style=flat)](https://coveralls.io/r/vanilla/generator-vf) [![Code Climate](http://img.shields.io/codeclimate/github/vanilla/generator-vf.svg?style=flat)](https://codeclimate.com/github/vanilla/generator-vf) [![Dependency Status](http://img.shields.io/gemnasium/vanilla/generator-vf.svg?style=flat)](https://gemnasium.com/vanilla/generator-vf) [![Downloads](http://img.shields.io/npm/dm/generator-vanilla.svg?style=flat)](https://www.npmjs.org/package/generator-vf)
-
 A [Yeoman](http://yeoman.io) generator for Vanilla that will make your Plugin and Theme development a breeze
 
 ## Getting Started
