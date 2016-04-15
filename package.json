@@ -4,7 +4,7 @@
   "description": "A Yeoman generator for Vanilla that will make your Plugin and Theme development a breeze.",
   "license": "MIT",
   "main": "app/index.js",
-  "private": true,
+  "private": false,
   "contributors": [
     {
       "name": "Kasper Isager",
