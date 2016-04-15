@@ -1,6 +1,6 @@
 # generator-vf
 
-A [Yeoman](http://yeoman.io) generator for Vanilla that will make your Application, Plugin, and Theme development a breeze
+A [Yeoman](http://yeoman.io) generator for Vanilla that will make your Plugin and Theme development a breeze
 
 
 ## Getting Started
@@ -23,10 +23,10 @@ $ npm install -g yo
 
 Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a Backbone application or even a Chrome extension.
 
-To install generator-vanilla from npm, run:
+To install generator-vf from npm, run:
 
 ```sh
-$ npm install -g generator-vanilla
+$ npm install -g generator-vf
 ```
 
 Finally, initiate the generator:
