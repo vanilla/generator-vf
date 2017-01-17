@@ -1,15 +1,15 @@
 <?php if (!defined('APPLICATION')) exit;
 
-$<%= type %>Info['<%= directory %>'] = array(
-    'Name'        => "<%= name %>",<% if (desc) { %>
-    'Description' => "<%= desc %>",<% } %>
+$<%= type %>Info['<%= directory %>'] = [
+    'Name'        => '<%= name %>',<% if (desc) { %>
+    'Description' => '<%= desc %>',<% } %>
     'Version'     => '1.0.0',<% if (url) { %>
     'PluginUrl'   => '<%= url %>',<% } %>
-    'Author'      => "<%= author.name %>",<% if (author.email) { %>
+    'Author'      => '<%= author.name %>',<% if (author.email) { %>
     'AuthorEmail' => '<%= author.email %>',<% } if (author.url) { %>
     'AuthorUrl'   => '<%= author.url %>',<% } %>
     'License'     => '<%= license %>'
-);
+];
 
 /**
  * <%= name %> Plugin
